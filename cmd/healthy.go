@@ -41,7 +41,7 @@ var healthCmd = &cobra.Command{
 			fmt.Fprintln(os.Stderr, err.Error())
 			os.Exit(1)
 		}
-		fmt.Printf("The site %s is alive.\n", baseUrl)
+		fmt.Printf("The site %s is healthy.\n", baseUrl)
 	},
 }
 
