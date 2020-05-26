@@ -10,21 +10,22 @@ import (
 	"github.com/go-resty/resty/v2"
 )
 
-func HealthCheck(baseUrl, urlpath string, verbose bool) error {
-	fullUrl, err := url.Parse(baseUrl)
+// HealthCheck checks the health of an endpoint
+func HealthCheck(baseURL, urlpath string, verbose bool) error {
+	fullURL, err := url.Parse(baseURL)
 	if err != nil {
-		return fmt.Errorf("Not a valid URL: %s\n", fullUrl)
+		return fmt.Errorf("not a valid url: %s", fullURL)
 	}
-	fullUrl.Path = path.Join(fullUrl.Path, urlpath)
-	if fullUrl.Scheme == "" {
-		fullUrl.Scheme = "https"
+	fullURL.Path = path.Join(fullURL.Path, urlpath)
+	if fullURL.Scheme == "" {
+		fullURL.Scheme = "https"
 	}
 	resp, err := resty.New().
 		SetDebug(verbose).
 		NewRequest().
 		SetResult(&healthCheckResponse{}).
 		SetError(&healthCheckResponse{}).
-		Get(fullUrl.String())
+		Get(fullURL.String())
 	if err != nil {
 		return err
 	}
@@ -32,20 +33,19 @@ func HealthCheck(baseUrl, urlpath string, verbose bool) error {
 	if resp.IsError() {
 		result, ok := resp.Error().(*healthCheckResponse)
 		if !ok {
-			return fmt.Errorf("The site is not healthy. Response status %s. The body could not be parsed.", resp.Status())
+			return fmt.Errorf("the site is not healthy. response status %s. the body could not be parsed", resp.Status())
 		}
 		if result.IsHealthy {
-			return fmt.Errorf("The status code indicates failure, but IsHealthy=true. Response status %s.", resp.Status())
+			return fmt.Errorf("the status code indicates failure, but IsHealthy=true. response status %s", resp.Status())
 		}
-		return formatHealthCheckErrors("The site is not healthy. IsHealthy=false.", *result)
-	} else {
-		result, ok := resp.Error().(*healthCheckResponse)
-		if !ok {
-			return fmt.Errorf("The response status code indicates success (%s) but the body could not be parsed.", resp.Status())
-		}
-		if !result.IsHealthy {
-			return formatHealthCheckErrors("The response status code indicates success (%s) but IsHealthy=false.", *result)
-		}
+		return formatHealthCheckErrors("the site is not healthy. IsHealthy=false.", *result)
+	}
+	result, ok := resp.Result().(*healthCheckResponse)
+	if !ok {
+		return fmt.Errorf("the response status code indicates success (%s) but the body could not be parsed", resp.Status())
+	}
+	if !result.IsHealthy {
+		return formatHealthCheckErrors("the response status code indicates success (%s) but IsHealthy=false", *result)
 	}
 	return nil
 }
@@ -56,7 +56,7 @@ func formatHealthCheckErrors(msg string, hcr healthCheckResponse) error {
 	sb.WriteRune('\n')
 	for _, r := range hcr.Results {
 		if !r.Check.IsHealthy {
-			sb.WriteString(fmt.Sprintf("  [fail] %s: %s (%s)", r.Name, r.Check.Message, r.Check.Duration))
+			sb.WriteString(fmt.Sprintf("  [unhealthy] %s: %s (%s)", r.Name, r.Check.Message, r.Check.Duration))
 			sb.WriteRune('\n')
 		}
 	}

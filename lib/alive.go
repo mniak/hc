@@ -8,24 +8,25 @@ import (
 	"github.com/go-resty/resty/v2"
 )
 
-func LivenessCheck(baseUrl, urlpath string, verbose bool) error {
-	fullUrl, err := url.Parse(baseUrl)
+// LivenessCheck checks the liveness of an endpoint
+func LivenessCheck(baseURL, urlpath string, verbose bool) error {
+	fullURL, err := url.Parse(baseURL)
 	if err != nil {
-		return fmt.Errorf("Not a valid URL: %s\n", fullUrl)
+		return fmt.Errorf("not a valid URL: %s", fullURL)
 	}
-	fullUrl.Path = path.Join(fullUrl.Path, urlpath)
-	if fullUrl.Scheme == "" {
-		fullUrl.Scheme = "https"
+	fullURL.Path = path.Join(fullURL.Path, urlpath)
+	if fullURL.Scheme == "" {
+		fullURL.Scheme = "https"
 	}
 	resp, err := resty.New().
 		SetDebug(verbose).
 		NewRequest().
-		Get(fullUrl.String())
+		Get(fullURL.String())
 	if err != nil {
 		return err
 	}
 	if !resp.IsSuccess() {
-		return fmt.Errorf("The site is not alive. Response status %s\n", resp.Status())
+		return fmt.Errorf("the site is not alive. response status %s", resp.Status())
 	}
 	return nil
 }
