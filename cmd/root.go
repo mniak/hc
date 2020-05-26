@@ -37,5 +37,8 @@ func Execute() {
 	}
 }
 
+var verboseFlag bool
+
 func init() {
+	rootCmd.PersistentFlags().BoolVarP(&verboseFlag, "verbose", "v", false, "Enable verbose mode")
 }

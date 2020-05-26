@@ -38,6 +38,9 @@ go get github.com/BraspagDevelopers/bphc
 **`bphc <command> [flags]`** 
 There is no root functionality. You must inform a command in order to perform any relevant action.
 
+### Flags
+* **`-v` or `--verbose`:** Enable verbose mode
+
 ### Command `alive`
 **`bphc alive <Base_URL> [-v|--verbose] [--path path]`**
 
@@ -50,5 +53,19 @@ When the check succedes, it will be produce an exit code of `0`. Any failure wil
 * **`Base_URL`:** The base URL to use in the request. If _scheme_ is absent, `https://` will be used.
 
 #### Flags
-* **`--path path`:** The path for the alive endpoint (default `/_meta/alive`)
-* **`-v` or `--verbose`:** Enable verbose mode
+* **`--path path`:** The path for the liveness endpoint (default `/_meta/alive`)
+
+### Command `healthy`
+**`bphc healthy <Base_URL> [-v|--verbose] [--path path]`**
+
+Sends a `GET` HTTP request to a site in order to check its health.
+If the site returns a status code in the range 200-299 and the body is in JSON format and the value of the property `IsHealthy` is `true`, the site is considered healhty.
+If not, the check will fail.
+
+When the check succedes, it will be produce an exit code of `0`. Any failure will produce a difference exit code. Additionaly, there will always be a message in `STDOUT` when the check fails.
+#### Arguments
+* **`Base_URL`:** The base URL to use in the request. If _scheme_ is absent, `https://` will be used.
+
+#### Flags
+* **`--path path`:** The path for the healthcheck endpoint (default `/healthcheck`)
+

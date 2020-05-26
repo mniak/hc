@@ -23,20 +23,20 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// aliveCmd represents the alive command
-var aliveCmd = &cobra.Command{
-	Use:     "alive",
-	Aliases: []string{"a", "liveness"},
-	Short:   "Check if the site is alive",
-	Long: `Sends a GET HTTP request to a site in order to check its liveness.
-	If the site returns a status code in the range 200-299, it will be considered alive.
-	If the site returns any other status code, the check will fail.
+// healthCmd represents the health command
+var healthCmd = &cobra.Command{
+	Use:     "healthy",
+	Aliases: []string{"h", "health", "healthcheck"},
+	Short:   "Check if the site is healthy",
+	Long: `Sends a GET HTTP request to a site in order to check its health.
+	If the site returns a status code in the range 200-299 and the body is in JSON format and the value of the property IsHealthy is true, the site is considered healhty.
+	If not, the check will fail.
 	
-	When the check succedes, it will be produce an exit code of 0. Any failure will produce a difference exit code. Additionaly, there will always be a message in STDOUT when the check fails.`,
+	When the check succedes, it will be produce an exit code of 0. Any failure will produce a difference exit code. Additionaly, there will always be a message in STDOUT when the check fails`,
 	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		baseUrl := args[0]
-		err := lib.LivenessCheck(baseUrl, livenessPathFlag, verboseFlag)
+		err := lib.HealthCheck(baseUrl, healthcheckPathFlag, verboseFlag)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err.Error())
 			os.Exit(1)
@@ -45,9 +45,9 @@ var aliveCmd = &cobra.Command{
 	},
 }
 
-var livenessPathFlag string
+var healthcheckPathFlag string
 
 func init() {
-	rootCmd.AddCommand(aliveCmd)
-	aliveCmd.Flags().StringVar(&livenessPathFlag, "path", "/_meta/alive", "The path for the liveness endpoint")
+	rootCmd.AddCommand(healthCmd)
+	healthCmd.Flags().StringVar(&healthcheckPathFlag, "path", "/healthcheck", "The path for the healthcheck endpoint")
 }
