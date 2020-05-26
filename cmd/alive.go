@@ -17,11 +17,9 @@ package cmd
 
 import (
 	"fmt"
-	"net/url"
 	"os"
-	"path"
 
-	"github.com/go-resty/resty/v2"
+	"github.com/BraspagDevelopers/bphc/lib"
 	"github.com/spf13/cobra"
 )
 
@@ -38,26 +36,10 @@ var aliveCmd = &cobra.Command{
 	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		baseUrl := args[0]
-		fullUrl, err := url.Parse(baseUrl)
+		err := lib.CheckLiveness(baseUrl, pathFlag, verboseFlag)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "Not a valid URL: %s\n", fullUrl)
+			fmt.Fprintf(os.Stderr, err.Error())
 			os.Exit(1)
-		}
-		fullUrl.Path = path.Join(fullUrl.Path, pathFlag)
-		if fullUrl.Scheme == "" {
-			fullUrl.Scheme = "https"
-		}
-		resp, err := resty.New().
-			SetDebug(verboseFlag).
-			NewRequest().
-			Get(fullUrl.String())
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "Error checking liveness: %s\n", err.Error())
-			os.Exit(2)
-		}
-		if !resp.IsSuccess() {
-			fmt.Fprintf(os.Stderr, "The site is not alive. Response status %s\n", resp.Status())
-			os.Exit(2)
 		}
 		fmt.Printf("The site %s is alive.\n", baseUrl)
 	},
