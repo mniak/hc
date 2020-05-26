@@ -29,9 +29,11 @@ import (
 var aliveCmd = &cobra.Command{
 	Use:   "alive",
 	Short: "Check if the site is alive",
-	Long: `Calls the 'alive' endpoint of a site in order to determine if it is alive or not.
-		If the returned status is on range 200-299 then the site is considered alive.
-		Any other status or failure will consider the site as not alive.`,
+	Long: `Sends a GET HTTP request to a site in order to check its liveness.
+	If the site returns a status code in the range 200-299, it will be considered alive.
+	If the site returns any other status code, the check will fail.
+	
+	When the check succedes, it will be produce an exit code of 0. Any failure will produce a difference exit code. Additionaly, there will always be a message in STDOUT when the check fails.`,
 	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		baseUrl := args[0]
