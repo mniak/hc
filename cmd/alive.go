@@ -27,8 +27,9 @@ import (
 
 // aliveCmd represents the alive command
 var aliveCmd = &cobra.Command{
-	Use:   "alive",
-	Short: "Check if the site is alive",
+	Use:     "alive",
+	Aliases: []string{"a", "liveness"},
+	Short:   "Check if the site is alive",
 	Long: `Sends a GET HTTP request to a site in order to check its liveness.
 	If the site returns a status code in the range 200-299, it will be considered alive.
 	If the site returns any other status code, the check will fail.
