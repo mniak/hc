@@ -1,4 +1,4 @@
-module github.com/mniak/hc
+module github.com/BraspagDevelopers/bphc
 
 go 1.14
 

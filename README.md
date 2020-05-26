@@ -1,4 +1,4 @@
-`hc` - HealthCheck Tool
+`bphc` - Braspag Health Checking Tool
 ==============================
 
 **Work in Progress!**
@@ -6,9 +6,9 @@
 ## Features
 
 ### Liveness check
-`hc`
-
-### Health check
+```bash
+bphc alive example.com
+``` 
 
 ## Installation
 
@@ -16,23 +16,23 @@
 
 Install `hc` to `/usr/local/bin`
 ```bash
-curl -sf https://gobinaries.com/mniak/hc | sh
+curl -sf https://gobinaries.com/BraspagDevelopers/bphc | sh
 ```
 
 You can also specify a custom directory where to download the binary file
 ```bash
 # Install on the current directory
-curl -sf https://gobinaries.com/mniak/hc | PREFIX=. sh
+curl -sf https://gobinaries.com/BraspagDevelopers/bphc | PREFIX=. sh
 ```
 ```bash
 # Install on /tmp
-curl -sf https://gobinaries.com/mniak/hc | PREFIX=/tmp sh
+curl -sf https://gobinaries.com/BraspagDevelopers/bphc | PREFIX=/tmp sh
 ```
 
 
 ### `go get` method
 ```bash
-go get github.com/mniak/hc
+go get github.com/BraspagDevelopers/bphc
 ```
 
 ## Usage
