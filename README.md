@@ -12,7 +12,7 @@ bphc alive example.com
 
 ## Installation
 
-### gobinaries.com method
+### [gobinaries.com](gobinaries.com) method
 
 Install to `/usr/local/bin`
 ```bash
