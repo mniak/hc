@@ -15,7 +15,7 @@ limitations under the License.
 */
 package main
 
-import "github.com/mniak/gohc/cmd"
+import "github.com/mniak/hc/cmd"
 
 func main() {
 	cmd.Execute()

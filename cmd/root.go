@@ -24,7 +24,7 @@ import (
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "gohc",
+	Use:   "hc",
 	Short: "Health checking tools",
 }
 
