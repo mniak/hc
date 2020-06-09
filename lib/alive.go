@@ -10,7 +10,7 @@ import (
 func LivenessCheck(base, path string, verbose bool) error {
 	url, err := makeurl(base, path)
 	if err != nil {
-		return fmt.Errorf("not a valid URL: %s", url)
+		return fmt.Errorf("invalid URL: %s/%s", base, path)
 	}
 	resp, err := resty.New().
 		SetDebug(verbose).

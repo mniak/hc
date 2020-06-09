@@ -45,5 +45,5 @@ var livenessPathFlag string
 
 func init() {
 	rootCmd.AddCommand(aliveCmd)
-	aliveCmd.Flags().StringVar(&livenessPathFlag, "path", "/_meta/alive", "The path for the liveness endpoint")
+	aliveCmd.Flags().StringVar(&livenessPathFlag, "path", "dfom.htm", "The path for the liveness endpoint")
 }

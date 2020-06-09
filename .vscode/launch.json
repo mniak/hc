@@ -11,7 +11,7 @@
             "mode": "auto",
             "program": "${workspaceFolder}",
             "env": {},
-            "args": ["alive", "example.com"]
+            "args": ["alive", "127.0.0.1"]
         }
     ]
 }
