@@ -17,7 +17,6 @@ package cmd
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/BraspagDevelopers/bphc/lib"
 	"github.com/spf13/cobra"
@@ -37,10 +36,7 @@ var healthCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		baseUrl := args[0]
 		err := lib.HealthCheck(baseUrl, healthcheckPathFlag, verboseFlag)
-		if err != nil {
-			fmt.Fprintln(os.Stderr, err.Error())
-			os.Exit(1)
-		}
+		handle(err)
 		fmt.Printf("The site %s is healthy.\n", baseUrl)
 	},
 }
