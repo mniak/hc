@@ -3,29 +3,23 @@ package lib
 import (
 	"errors"
 	"fmt"
-	"net/url"
-	"path"
 	"strings"
 
 	"github.com/go-resty/resty/v2"
 )
 
 // HealthCheck checks the health of an endpoint
-func HealthCheck(baseURL, urlpath string, verbose bool) error {
-	fullURL, err := url.Parse(baseURL)
+func HealthCheck(base, path string, verbose bool) error {
+	url, err := makeurl(base, path)
 	if err != nil {
-		return fmt.Errorf("not a valid url: %s", fullURL)
-	}
-	fullURL.Path = path.Join(fullURL.Path, urlpath)
-	if fullURL.Scheme == "" {
-		fullURL.Scheme = "https"
+		return fmt.Errorf("not a valid URL: %s", url)
 	}
 	resp, err := resty.New().
 		SetDebug(verbose).
 		NewRequest().
 		SetResult(&healthCheckResponse{}).
 		SetError(&healthCheckResponse{}).
-		Get(fullURL.String())
+		Get(url.String())
 	if err != nil {
 		return err
 	}

@@ -50,10 +50,10 @@ If the site returns any other status code, the check will fail.
 
 When the check succedes, it will be produce an exit code of `0`. Any failure will produce a difference exit code. Additionaly, there will always be a message in `STDOUT` when the check fails.
 #### Arguments
-* **`Base_URL`:** The base URL to use in the request. If _scheme_ is absent, `https://` will be used.
+* **`Base_URL`:** The base URL to use in the request. If _scheme_ is absent, `http` will be used for localhost or IPs. `https` is used otherwise.
 
 #### Flags
-* **`--path path`:** The path for the liveness endpoint (default `/_meta/alive`)
+* **`--path path`:** The path for the liveness endpoint (default `/dfom.htm`)
 
 ### Command `healthy`
 **`bphc healthy <Base_URL> [-v|--verbose] [--path path]`**
@@ -64,7 +64,7 @@ If not, the check will fail.
 
 When the check succedes, it will be produce an exit code of `0`. Any failure will produce a difference exit code. Additionaly, there will always be a message in `STDOUT` when the check fails.
 #### Arguments
-* **`Base_URL`:** The base URL to use in the request. If _scheme_ is absent, `https://` will be used.
+* **`Base_URL`:** The base URL to use in the request. If _scheme_ is absent, `http` will be used for localhost or IPs. `https` is used otherwise.
 
 #### Flags
 * **`--path path`:** The path for the healthcheck endpoint (default `/healthcheck`)
