@@ -13,6 +13,12 @@ func TestMakeUrl(t *testing.T) {
 		path        string
 		expectedUrl string
 	}{
+
+		{"localhost", "", "http://localhost"},
+		{"10.133.1.2", "", "http://10.133.1.2"},
+		{"localhost:1234", "/path", "http://localhost:1234/path"},
+		{"10.133.1.2:1234", "/path", "http://10.133.1.2:1234/path"},
+
 		{":1234", "", "http://localhost:1234"},
 		{"localhost:1234", "", "http://localhost:1234"},
 		{"10.133.1.2:1234", "", "http://10.133.1.2:1234"},
