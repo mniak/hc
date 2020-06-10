@@ -12,7 +12,7 @@ bphc alive example.com
 
 ### Health check
 ```bash
-bphc health example.com
+bphc healthy example.com
 ``` 
 
 ## Installation
