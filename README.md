@@ -10,6 +10,11 @@
 bphc alive example.com
 ``` 
 
+### Health check
+```bash
+bphc health example.com
+``` 
+
 ## Installation
 
 ### [gobinaries.com](gobinaries.com) method
