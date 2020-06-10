@@ -13,7 +13,6 @@ func TestMakeUrl(t *testing.T) {
 		path        string
 		expectedUrl string
 	}{
-
 		{"localhost", "", "http://localhost"},
 		{"10.133.1.2", "", "http://10.133.1.2"},
 		{"localhost:1234", "/path", "http://localhost:1234/path"},
@@ -39,6 +38,20 @@ func TestMakeUrl(t *testing.T) {
 		{"https://:1234", "/path", "https://localhost:1234/path"},
 		{"https://localhost:1234", "/path", "https://localhost:1234/path"},
 		{"https://10.133.1.2:1234", "/path", "https://10.133.1.2:1234/path"},
+
+		{"example.com", "", "https://example.com"},
+		{"http://example.com", "", "http://example.com"},
+		{"https://example.com", "", "https://example.com"},
+		{"example.com", "/path", "https://example.com/path"},
+		{"http://example.com", "/path", "http://example.com/path"},
+		{"https://example.com", "/path", "https://example.com/path"},
+
+		{"example.com:8080", "", "https://example.com:8080"},
+		{"http://example.com:8080", "", "http://example.com:8080"},
+		{"https://example.com:8080", "", "https://example.com:8080"},
+		{"example.com:8080", "/path", "https://example.com:8080/path"},
+		{"http://example.com:8080", "/path", "http://example.com:8080/path"},
+		{"https://example.com:8080", "/path", "https://example.com:8080/path"},
 	}
 	for i, tt := range list {
 		t.Run(strconv.Itoa(i), func(t *testing.T) {

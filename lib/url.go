@@ -4,6 +4,7 @@ import (
 	"net"
 	"net/url"
 	"path"
+	"strconv"
 	"strings"
 )
 
@@ -32,9 +33,10 @@ func makeurl(b, p string) (*url.URL, error) {
 		return makeurl("localhost"+b, p)
 	}
 
-	_, _, err := net.SplitHostPort(b)
-	if err == nil {
-		return makeurl("http://"+b, p)
+	if host, port, err := net.SplitHostPort(b); err == nil {
+		if _, err = strconv.Atoi(port); err == nil && !strings.Contains(host, "//") {
+			return makeurl("//"+b, p)
+		}
 	}
 
 	u, err := url.Parse(b)
@@ -44,8 +46,7 @@ func makeurl(b, p string) (*url.URL, error) {
 
 	if u.Host == "" {
 		u = &url.URL{
-			Scheme: "http",
-			Host:   b,
+			Host: b,
 		}
 	}
 
