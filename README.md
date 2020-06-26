@@ -17,7 +17,7 @@ bphc healthy example.com
 
 ## Installation
 
-### [gobinaries.com](gobinaries.com) method
+### [gobinaries.com](https://gobinaries.com) method
 
 Install to `/usr/local/bin`
 ```bash
