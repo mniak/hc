@@ -20,9 +20,11 @@ var healthCmd = &cobra.Command{
 	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		baseUrl := args[0]
-		err := lib.HealthCheck(baseUrl, healthcheckPathFlag, verboseFlag)
+		inclsucc, err := cmd.Flags().GetBool("all")
 		handle(err)
-		fmt.Printf("The site %s is healthy.\n", baseUrl)
+		err, msg := lib.HealthCheck(baseUrl, healthcheckPathFlag, verboseFlag, inclsucc)
+		handle(err)
+		fmt.Print(msg)
 	},
 }
 
@@ -31,4 +33,5 @@ var healthcheckPathFlag string
 func init() {
 	rootCmd.AddCommand(healthCmd)
 	healthCmd.Flags().StringVar(&healthcheckPathFlag, "path", "/healthcheck", "The path for the healthcheck endpoint")
+	healthCmd.Flags().BoolP("all", "a", false, "Include successes in the result message")
 }

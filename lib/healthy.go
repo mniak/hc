@@ -9,10 +9,10 @@ import (
 )
 
 // HealthCheck checks the health of an endpoint
-func HealthCheck(base, path string, verbose bool) error {
+func HealthCheck(base, path string, verbose bool, includeSuccess bool) (error, string) {
 	url, err := makeurl(base, path)
 	if err != nil {
-		return fmt.Errorf("not a valid URL: %s", url)
+		return fmt.Errorf("not a valid URL: %s", url), ""
 	}
 	resp, err := resty.New().
 		SetDebug(verbose).
@@ -21,40 +21,43 @@ func HealthCheck(base, path string, verbose bool) error {
 		SetError(&healthCheckResponse{}).
 		Get(url.String())
 	if err != nil {
-		return err
+		return err, ""
 	}
 
 	if resp.IsError() {
 		result, ok := resp.Error().(*healthCheckResponse)
 		if !ok {
-			return fmt.Errorf("the site is not healthy. response status %s. the body could not be parsed", resp.Status())
+			return fmt.Errorf("the site is not healthy. response status %s. the body could not be parsed", resp.Status()), ""
 		}
 		if result.IsHealthy {
-			return fmt.Errorf("the status code indicates failure, but IsHealthy=true. response status %s", resp.Status())
+			return fmt.Errorf("the status code indicates failure, but IsHealthy=true. response status %s", resp.Status()), ""
 		}
-		return formatHealthCheckErrors("the site is not healthy. IsHealthy=false.", *result)
+		return errors.New(formatResponseMsg("the site is not healthy. IsHealthy=false.", *result, includeSuccess)), ""
 	}
 	result, ok := resp.Result().(*healthCheckResponse)
 	if !ok {
-		return fmt.Errorf("the response status code indicates success (%s) but the body could not be parsed", resp.Status())
+		return fmt.Errorf("the response status code indicates success (%s) but the body could not be parsed", resp.Status()), ""
 	}
 	if !result.IsHealthy {
-		return formatHealthCheckErrors("the response status code indicates success (%s) but IsHealthy=false", *result)
+		return errors.New(formatResponseMsg("the response status code indicates success (%s) but IsHealthy=false", *result, includeSuccess)), ""
 	}
-	return nil
+	return nil, formatResponseMsg("The site %s is healthy.\n", *result, includeSuccess)
 }
 
-func formatHealthCheckErrors(msg string, hcr healthCheckResponse) error {
+func formatResponseMsg(msg string, hcr healthCheckResponse, includeSuccess bool) string {
 	var sb strings.Builder
 	sb.WriteString(msg)
 	sb.WriteRune('\n')
 	for _, r := range hcr.Results {
 		if !r.Check.IsHealthy {
-			sb.WriteString(fmt.Sprintf("  [unhealthy] %s: %s (%s)", r.Name, r.Check.Message, r.Check.Duration))
+			sb.WriteString(fmt.Sprintf("  [unhealthy] %s: %s (%fs)", r.Name, r.Check.Message, r.Check.Duration))
+			sb.WriteRune('\n')
+		} else if includeSuccess {
+			sb.WriteString(fmt.Sprintf("  [healthy]   %s: %s (%fs)", r.Name, r.Check.Message, r.Check.Duration))
 			sb.WriteRune('\n')
 		}
 	}
-	return errors.New(sb.String())
+	return sb.String()
 }
 
 type healthCheckResponse struct {
