@@ -61,7 +61,7 @@ type healthCheckResponse struct {
 	IsHealthy           bool                `json:"IsHealthy"`
 	HasRegisteredChecks bool                `json:"HasRegisteredChecks"`
 	Results             []healthCheckResult `json:"Results"`
-	TotalDuration       string              `json:"TotalDuration"`
+	TotalDuration       float64             `json:"TotalDuration"`
 }
 
 type healthCheckResult struct {
@@ -70,7 +70,7 @@ type healthCheckResult struct {
 }
 
 type healthCheckCheck struct {
-	IsHealthy bool   `json:"IsHealthy"`
-	Message   string `json:"Message"`
-	Duration  string `json:"Duration"`
+	IsHealthy bool    `json:"IsHealthy"`
+	Message   string  `json:"Message"`
+	Duration  float64 `json:"Duration"`
 }
