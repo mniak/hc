@@ -20,9 +20,9 @@ var healthCmd = &cobra.Command{
 	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		baseURL := args[0]
-		inclsucc, err := cmd.Flags().GetBool("all")
+		includeSuccess, err := cmd.Flags().GetBool("all")
 		handle(err)
-		err, msg := lib.HealthCheck(baseURL, healthcheckPathFlag, verboseFlag, inclsucc)
+		err, msg := lib.HealthCheck(baseURL, healthcheckPathFlag, verboseFlag, includeSuccess)
 		handle(err)
 		fmt.Printf(msg, baseURL)
 	},

@@ -42,7 +42,7 @@ func HealthCheck(base, path string, verbose bool, includeSuccess bool) (error, s
 	if !result.IsHealthy {
 		return errors.New(formatResponseMsg("the response status code indicates success (%s) but IsHealthy=false", *result, includeSuccess)), ""
 	}
-	return nil, formatResponseMsg("The site %s is healthy.\n", *result, includeSuccess)
+	return nil, formatResponseMsg("The site %s is healthy.", *result, includeSuccess)
 }
 
 func formatResponseMsg(msg string, hcr healthCheckResponse, includeSuccess bool) string {
