@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/go-resty/resty/v2"
+	"github.com/google/go-cmp/cmp"
 )
 
 // HealthCheck checks the health of an endpoint
@@ -26,7 +27,7 @@ func HealthCheck(base, path string, verbose bool, includeSuccess bool) (error, s
 
 	if resp.IsError() {
 		result, ok := resp.Error().(*healthCheckResponse)
-		if !ok {
+		if !ok || cmp.Equal(healthCheckResponse{}, *result) {
 			return fmt.Errorf("the site is not healthy. response status %s. the body could not be parsed", resp.Status()), ""
 		}
 		if result.IsHealthy {
