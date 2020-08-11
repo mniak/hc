@@ -1,3 +1,7 @@
+![License](https://img.shields.io/github/license/BraspagDevelopers/bphc.svg?style=flat-square)
+![Tag](https://img.shields.io/github/tag/BraspagDevelopers/bphc.svg?style=flat-square)
+[![Go Report Card](https://goreportcard.com/badge/github.com/BraspagDevelopers/bphc?style-flat-square)](https://goreportcard.com/report/github.com/BraspagDevelopers/bphc)
+
 `bphc` - Braspag Health Checking Tool
 ==============================
 
