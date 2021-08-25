@@ -62,6 +62,22 @@ func TestMakeUrl(t *testing.T) {
 		{"https://example.com", "/path", "https://example.com/path"},
 		{"https://example.com:8080", "", "https://example.com:8080"},
 		{"https://example.com:8080", "/path", "https://example.com:8080/path"},
+
+		// example.com/path
+		{"example.com/path", "", "https://example.com/path"},
+		{"example.com/path", "/subpath", "https://example.com/path/subpath"},
+		{"example.com:8080/path", "", "https://example.com/path"},
+		{"example.com:8080/path", "/subpath", "https://example.com/path/subpath"},
+
+		{"http://example.com/path", "", "http://example.com/path"},
+		{"http://example.com/path", "/subpath", "http://example.com/path/subpath"},
+		{"http://example.com:8080/path", "", "http://example.com:8080/path"},
+		{"http://example.com:8080/path", "/subpath", "http://example.com:8080/path/subpath"},
+
+		{"https://example.com/path", "", "https://example.com/path"},
+		{"https://example.com/path", "/subpath", "https://example.com/path/subpath"},
+		{"https://example.com:8080/path", "", "https://example.com:8080/path"},
+		{"https://example.com:8080/path", "/subpath", "https://example.com:8080/path/subpath"},
 	}
 
 	for i, tt := range list {
