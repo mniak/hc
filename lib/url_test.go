@@ -1,7 +1,7 @@
 package lib
 
 import (
-	"strconv"
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -80,8 +80,8 @@ func TestMakeUrl(t *testing.T) {
 		{"https://example.com:8080/path", "/subpath", "https://example.com:8080/path/subpath"},
 	}
 
-	for i, tt := range list {
-		t.Run(strconv.Itoa(i), func(t *testing.T) {
+	for _, tt := range list {
+		t.Run(fmt.Sprintf("url=%s, path=%s", tt.url, tt.path), func(t *testing.T) {
 			actual, err := makeurl(tt.url, tt.path)
 			require.NoError(t, err)
 			require.EqualValues(t, tt.expectedUrl, actual.String())
